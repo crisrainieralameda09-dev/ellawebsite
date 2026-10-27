@@ -1,0 +1,389 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="LET Reviewer PH - Your AI-powered Philippine LET exam companion. Study 29 subjects, chat with AI tutors, and take AI-generated quizzes.">
+    <title>LET Reviewer PH - AI-Powered LET Exam Companion 🇵🇭</title>
+    <link rel="stylesheet" href="styles.css">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+</head>
+<body>
+    <!-- Navigation -->
+    <nav class="navbar">
+        <div class="container">
+            <div class="nav-content">
+                <div class="logo">
+                    <span class="logo-icon">🎓</span>
+                    <span class="logo-text">LET Reviewer PH</span>
+                </div>
+                <div class="nav-links">
+                    <a href="#features">Features</a>
+                    <a href="#subjects">Subjects</a>
+                    <a href="#download">Download</a>
+                    <a href="#faq">FAQ</a>
+                </div>
+                <button class="mobile-menu-btn" onclick="toggleMobileMenu()">
+                    <span></span>
+                    <span></span>
+                    <span></span>
+                </button>
+            </div>
+        </div>
+    </nav>
+
+    <!-- Hero Section -->
+    <section class="hero">
+        <div class="container">
+            <div class="hero-content">
+                <div class="hero-text">
+                    <div class="badge">✨ Powered by Google Gemini AI</div>
+                    <h1 class="hero-title">
+                        Your AI-Powered<br>
+                        <span class="gradient-text">LET Exam Companion</span>
+                    </h1>
+                    <p class="hero-description">
+                        Study 29 LET subjects with AI tutors, take personalized quizzes, 
+                        and get instant study plans. Pass the Philippine Licensure Examination 
+                        for Teachers with confidence! 🇵🇭
+                    </p>
+                    <div class="hero-buttons">
+                        <a href="#download" class="btn btn-primary">
+                            <span>📱 Download APK</span>
+                            <span class="btn-size">5.18 MB</span>
+                        </a>
+                        <a href="#features" class="btn btn-secondary">
+                            Learn More →
+                        </a>
+                    </div>
+                    <div class="hero-stats">
+                        <div class="stat">
+                            <div class="stat-number">29</div>
+                            <div class="stat-label">LET Subjects</div>
+                        </div>
+                        <div class="stat">
+                            <div class="stat-number">100%</div>
+                            <div class="stat-label">Free to Use</div>
+                        </div>
+                        <div class="stat">
+                            <div class="stat-number">AI</div>
+                            <div class="stat-label">Powered Tutoring</div>
+                        </div>
+                    </div>
+                </div>
+                <div class="hero-image">
+                    <div class="phone-mockup">
+                        <div class="phone-screen">
+                            <div class="app-preview">
+                                <div class="preview-header">
+                                    <div class="preview-title">🎓 LET Reviewer PH</div>
+                                    <div class="preview-subtitle">AI Study Companion</div>
+                                </div>
+                                <div class="preview-subjects">
+                                    <div class="subject-card">📚 Professional Education</div>
+                                    <div class="subject-card">🔬 General Education</div>
+                                    <div class="subject-card">➕ Elementary Specialization</div>
+                                    <div class="subject-card">🧬 Secondary Specialization</div>
+                                </div>
+                                <div class="preview-chat">
+                                    <div class="chat-bubble ai">
+                                        <div class="bubble-icon">🤖</div>
+                                        <div class="bubble-text">Hello! I'm your AI tutor. What would you like to study today?</div>
+                                    </div>
+                                    <div class="chat-bubble user">
+                                        <div class="bubble-text">Explain Piaget's theory</div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Features Section -->
+    <section id="features" class="features">
+        <div class="container">
+            <div class="section-header">
+                <h2 class="section-title">Powerful Features for LET Success</h2>
+                <p class="section-description">Everything you need to ace the LET exam in one app</p>
+            </div>
+            <div class="features-grid">
+                <div class="feature-card">
+                    <div class="feature-icon">🤖</div>
+                    <h3 class="feature-title">AI Tutors</h3>
+                    <p class="feature-description">Chat with subject-specific AI tutors powered by Google Gemini. Get instant explanations and study guidance.</p>
+                </div>
+                <div class="feature-card">
+                    <div class="feature-icon">📝</div>
+                    <h3 class="feature-title">Auto-Generated Quizzes</h3>
+                    <p class="feature-description">Take 10-question multiple choice quizzes with explanations. AI generates fresh questions every time.</p>
+                </div>
+                <div class="feature-card">
+                    <div class="feature-icon">📚</div>
+                    <h3 class="feature-title">29 LET Subjects</h3>
+                    <p class="feature-description">Complete coverage of Professional Ed, General Ed, and all Specialization areas.</p>
+                </div>
+                <div class="feature-card">
+                    <div class="feature-icon">💬</div>
+                    <h3 class="feature-title">Chat History</h3>
+                    <p class="feature-description">Your conversations are saved. Review previous lessons anytime, up to 100 messages per subject.</p>
+                </div>
+                <div class="feature-card">
+                    <div class="feature-icon">🎯</div>
+                    <h3 class="feature-title">Study Plans</h3>
+                    <p class="feature-description">Get personalized LET preparation roadmaps with priority subjects and time allocation.</p>
+                </div>
+                <div class="feature-card">
+                    <div class="feature-icon">🔍</div>
+                    <h3 class="feature-title">Smart Search</h3>
+                    <p class="feature-description">Find subjects quickly with search and category filters. Filter by Prof Ed, Gen Ed, or Specialization.</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Subjects Section -->
+    <section id="subjects" class="subjects">
+        <div class="container">
+            <div class="section-header">
+                <h2 class="section-title">Complete LET Coverage</h2>
+                <p class="section-description">Study all 29 subjects required for the LET exam</p>
+            </div>
+            <div class="subjects-categories">
+                <div class="subject-category">
+                    <div class="category-header">
+                        <h3 class="category-title">📋 Professional Education</h3>
+                        <span class="category-count">10 subjects · 60% of exam</span>
+                    </div>
+                    <ul class="subject-list">
+                        <li>🧠 Child & Adolescent Development</li>
+                        <li>📋 The Teaching Profession</li>
+                        <li>📚 Curriculum Development</li>
+                        <li>🎯 Facilitating Learning</li>
+                        <li>📝 Assessment in Learning 1 & 2</li>
+                        <li>🌍 Social Dimensions of Education</li>
+                        <li>💻 Technology for Teaching</li>
+                        <li>🏫 Principles of Teaching</li>
+                        <li>🌟 Special and Inclusive Education</li>
+                    </ul>
+                </div>
+                <div class="subject-category">
+                    <div class="category-header">
+                        <h3 class="category-title">📖 General Education</h3>
+                        <span class="category-count">5 subjects · 40% of exam</span>
+                    </div>
+                    <ul class="subject-list">
+                        <li>📖 Communication & Literacy (English)</li>
+                        <li>🇵🇭 Komunikasyon sa Filipino</li>
+                        <li>🔢 Mathematics (Critical Thinking)</li>
+                        <li>🔬 Scientific Literacy</li>
+                        <li>🏛️ Social Awareness & Civic Responsibility</li>
+                    </ul>
+                </div>
+                <div class="subject-category">
+                    <div class="category-header">
+                        <h3 class="category-title">➕ Elementary Specialization</h3>
+                        <span class="category-count">6 subjects</span>
+                    </div>
+                    <ul class="subject-list">
+                        <li>➕ Elementary Mathematics</li>
+                        <li>🌱 Elementary Science</li>
+                        <li>📝 Elementary English</li>
+                        <li>🗺️ Araling Panlipunan</li>
+                        <li>❤️ Values Education / EsP</li>
+                        <li>🎵 MAPEH</li>
+                    </ul>
+                </div>
+                <div class="subject-category">
+                    <div class="category-header">
+                        <h3 class="category-title">🧬 Secondary Specialization</h3>
+                        <span class="category-count">8 subjects</span>
+                    </div>
+                    <ul class="subject-list">
+                        <li>🔤 English (Secondary Major)</li>
+                        <li>∫ Mathematics (Secondary Major)</li>
+                        <li>🧬 Biological Science</li>
+                        <li>🌐 Social Studies</li>
+                        <li>✨ Values Education</li>
+                        <li>⚙️ TLE</li>
+                        <li>📜 Filipino (Secondary)</li>
+                        <li>⚗️ Physical Science</li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Download Section -->
+    <section id="download" class="download">
+        <div class="container">
+            <div class="download-content">
+                <div class="download-info">
+                    <h2 class="download-title">Ready to Start Studying?</h2>
+                    <p class="download-description">Download the LET Reviewer PH app and start your journey to becoming a licensed teacher in the Philippines!</p>
+                    
+                    <div class="download-features">
+                        <div class="download-feature">
+                            <span class="check-icon">✅</span>
+                            <span>No registration required</span>
+                        </div>
+                        <div class="download-feature">
+                            <span class="check-icon">✅</span>
+                            <span>API key pre-configured</span>
+                        </div>
+                        <div class="download-feature">
+                            <span class="check-icon">✅</span>
+                            <span>Works offline (chat history)</span>
+                        </div>
+                        <div class="download-feature">
+                            <span class="check-icon">✅</span>
+                            <span>100% free to use</span>
+                        </div>
+                    </div>
+
+                    <div class="download-button-container">
+                        <a href="LETReviewer.apk" class="btn btn-download" download="LET-Reviewer-PH.apk" onclick="trackDownload()">
+                            <span class="download-icon">📱</span>
+                            <div class="download-text">
+                                <span class="download-label">Download APK</span>
+                                <span class="download-size">Version 1.0 · 5.18 MB · Fixed Release</span>
+                            </div>
+                        </a>
+                        <p class="download-note">
+                            <strong>Android 7.0+</strong> · Enable "Install from Unknown Sources" to install
+                        </p>
+                    </div>
+
+                    <div class="download-stats">
+                        <div class="stat-item">
+                            <div class="stat-value" id="downloadCount">0</div>
+                            <div class="stat-label">Downloads</div>
+                        </div>
+                        <div class="stat-item">
+                            <div class="stat-value">4.9★</div>
+                            <div class="stat-label">Rating</div>
+                        </div>
+                        <div class="stat-item">
+                            <div class="stat-value">~20MB</div>
+                            <div class="stat-label">Storage</div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="download-instructions">
+                    <h3 class="instructions-title">📋 Installation Steps</h3>
+                    <ol class="instructions-list">
+                        <li>
+                            <strong>Download</strong> the APK file by clicking the button
+                        </li>
+                        <li>
+                            <strong>Enable</strong> "Install from Unknown Sources" in your Android settings
+                            <span class="instruction-detail">Settings → Security → Unknown Sources</span>
+                        </li>
+                        <li>
+                            <strong>Open</strong> the downloaded APK file from your Downloads folder
+                        </li>
+                        <li>
+                            <strong>Tap Install</strong> and wait for installation to complete
+                        </li>
+                        <li>
+                            <strong>Launch</strong> the app and start studying! No setup needed 🎉
+                        </li>
+                    </ol>
+
+                    <div class="system-requirements">
+                        <h4>System Requirements</h4>
+                        <ul>
+                            <li><strong>OS:</strong> Android 7.0 (Nougat) or higher</li>
+                            <li><strong>Storage:</strong> 20 MB free space</li>
+                            <li><strong>Internet:</strong> Required for AI features</li>
+                            <li><strong>RAM:</strong> 2 GB recommended</li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- FAQ Section -->
+    <section id="faq" class="faq">
+        <div class="container">
+            <div class="section-header">
+                <h2 class="section-title">Frequently Asked Questions</h2>
+                <p class="section-description">Everything you need to know about LET Reviewer PH</p>
+            </div>
+            <div class="faq-grid">
+                <div class="faq-item">
+                    <h3 class="faq-question">Is the app really free?</h3>
+                    <p class="faq-answer">Yes! LET Reviewer PH is 100% free. The app comes with a pre-configured Gemini API key, so you can start using it immediately without any costs.</p>
+                </div>
+                <div class="faq-item">
+                    <h3 class="faq-question">Do I need to register or login?</h3>
+                    <p class="faq-answer">No registration required! Just download, install, and start studying. Your chat history is saved locally on your device.</p>
+                </div>
+                <div class="faq-item">
+                    <h3 class="faq-question">Does it work offline?</h3>
+                    <p class="faq-answer">The app requires internet to communicate with the AI tutor. However, your chat history is saved locally and can be viewed offline.</p>
+                </div>
+                <div class="faq-item">
+                    <h3 class="faq-question">How accurate is the AI tutor?</h3>
+                    <p class="faq-answer">The AI is powered by Google's Gemini model and trained on comprehensive LET materials. It provides accurate, helpful responses but should be used alongside official study materials.</p>
+                </div>
+                <div class="faq-item">
+                    <h3 class="faq-question">Can I use my own API key?</h3>
+                    <p class="faq-answer">Yes! While the app comes with a pre-configured key, you can update it anytime via the Settings screen if you want to use your own Gemini API key.</p>
+                </div>
+                <div class="faq-item">
+                    <h3 class="faq-question">Is my data safe and private?</h3>
+                    <p class="faq-answer">Absolutely. All data is stored locally on your device. Your questions are sent to Google's Gemini API for responses, but no personal information is collected or shared.</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Footer -->
+    <footer class="footer">
+        <div class="container">
+            <div class="footer-content">
+                <div class="footer-brand">
+                    <div class="footer-logo">
+                        <span class="logo-icon">🎓</span>
+                        <span class="logo-text">LET Reviewer PH</span>
+                    </div>
+                    <p class="footer-tagline">Your AI-powered companion for passing the Philippine Licensure Examination for Teachers</p>
+                </div>
+                <div class="footer-links">
+                    <div class="footer-column">
+                        <h4>Product</h4>
+                        <a href="#features">Features</a>
+                        <a href="#subjects">Subjects</a>
+                        <a href="#download">Download</a>
+                    </div>
+                    <div class="footer-column">
+                        <h4>Support</h4>
+                        <a href="#faq">FAQ</a>
+                        <a href="mailto:support@letreviewer.ph">Contact</a>
+                        <a href="#">Privacy Policy</a>
+                    </div>
+                    <div class="footer-column">
+                        <h4>Resources</h4>
+                        <a href="https://aistudio.google.com" target="_blank">Get API Key</a>
+                        <a href="#">Documentation</a>
+                        <a href="#">GitHub</a>
+                    </div>
+                </div>
+            </div>
+            <div class="footer-bottom">
+                <p>&copy; 2024 LET Reviewer PH. Made with ❤️ for Filipino Teachers.</p>
+                <p class="footer-disclaimer">Mabuhay ang mga guro ng Pilipinas! 🇵🇭</p>
+            </div>
+        </div>
+    </footer>
+
+    <script src="script.js"></script>
+</body>
+</html>

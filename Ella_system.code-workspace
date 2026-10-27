@@ -1,0 +1,13 @@
+{
+	"folders": [
+		{
+			"path": ".."
+		},
+		{
+			"path": "../../Android/AndroidProjectTemplate"
+		}
+	],
+	"settings": {
+		"liveServer.settings.multiRootWorkspaceName": "Ella_system"
+	}
+}
