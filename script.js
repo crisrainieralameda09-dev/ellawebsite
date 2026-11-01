@@ -264,45 +264,45 @@ function closeCodeModal() {
 
 function verifyAndDownload() {
     const input = document.getElementById('codeInput');
-    const error = document.getElementById('codeError');
     const code = input.value.trim();
     
     if (!code || code.length !== 6) {
         showError('Please enter a 6-character code');
         return;
     }
-    
-    // Verify the code
-    const result = window.CodeManager.verifyCode(code);
-    
-    if (!result.valid) {
-        showError(result.message === 'Invalid code' 
-            ? '❌ Invalid code. Please check and try again.'
-            : '⚠️ This code has already been used.');
-        return;
-    }
-    
-    // Mark code as used
-    window.CodeManager.markCodeAsUsed(code);
-    
-    // Track download
-    trackDownload();
-    
-    // Close modal
-    closeCodeModal();
-    
-    // Show success message
-    showSuccessNotification('✅ Code verified! Download starting...');
-    
-    // Start download
-    setTimeout(() => {
-        const link = document.createElement('a');
-        link.href = 'LETReviewer.apk';
-        link.download = 'LET-Reviewer-PH.apk';
-        document.body.appendChild(link);
-        link.click();
-        document.body.removeChild(link);
-    }, 500);
+
+    // Disable button to prevent double-clicks while verifying
+    const btn = document.querySelector('.btn-verify');
+    if (btn) { btn.disabled = true; btn.textContent = 'Verifying...'; }
+
+    window.CodeManager.verifyCode(code).then(result => {
+        if (!result.valid) {
+            showError(result.message === 'Invalid code'
+                ? '❌ Invalid code. Please check and try again.'
+                : '⚠️ This code has already been used.');
+            if (btn) { btn.disabled = false; btn.textContent = '✅ Verify & Download'; }
+            return;
+        }
+
+        // Mark as used, then download
+        window.CodeManager.markCodeAsUsed(code).then(() => {
+            trackDownload();
+            closeCodeModal();
+            showSuccessNotification('✅ Code verified! Download starting...');
+            if (btn) { btn.disabled = false; btn.textContent = '✅ Verify & Download'; }
+            setTimeout(() => {
+                const link = document.createElement('a');
+                link.href = 'LETReviewer.apk';
+                link.download = 'LET-Reviewer-PH.apk';
+                document.body.appendChild(link);
+                link.click();
+                document.body.removeChild(link);
+            }, 500);
+        });
+    }).catch(() => {
+        showError('⚠️ Verification failed. Please try again.');
+        if (btn) { btn.disabled = false; btn.textContent = '✅ Verify & Download'; }
+    });
 }
 
 function showError(message) {
