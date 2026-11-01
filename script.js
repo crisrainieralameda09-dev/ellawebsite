@@ -166,6 +166,211 @@ document.querySelectorAll('a[href^="#"]').forEach(anchor => {
     });
 });
 
+// ─── Admin password modal ────────────────────────────────────
+const ADMIN_PASSWORD = 'Crisalameda09';
+
+function openAdminModal(e) {
+    if (e) e.preventDefault();
+    const modal = document.getElementById('adminModal');
+    if (modal) {
+        modal.style.display = 'flex';
+        document.getElementById('adminPassword').focus();
+    }
+}
+
+function closeAdminModal() {
+    const modal = document.getElementById('adminModal');
+    if (modal) {
+        modal.style.display = 'none';
+        document.getElementById('adminPassword').value = '';
+        document.getElementById('adminError').style.display = 'none';
+    }
+}
+
+function verifyAdminPassword() {
+    const input = document.getElementById('adminPassword');
+    const error = document.getElementById('adminError');
+    const password = input.value.trim();
+    
+    if (!password) {
+        showAdminError('Please enter a password');
+        return;
+    }
+    
+    if (password === ADMIN_PASSWORD) {
+        // Password correct - set session and redirect to admin portal
+        closeAdminModal();
+        showSuccessNotification('✅ Access granted! Redirecting...');
+        
+        // Set session authentication
+        sessionStorage.setItem('admin_authenticated', 'true');
+        
+        setTimeout(() => {
+            window.location.href = 'dev-keygen.html?auth=true';
+        }, 800);
+    } else {
+        // Wrong password
+        showAdminError('❌ Incorrect password. Access denied.');
+    }
+}
+
+function showAdminError(message) {
+    const error = document.getElementById('adminError');
+    error.textContent = message;
+    error.style.display = 'block';
+    
+    // Shake animation
+    const input = document.getElementById('adminPassword');
+    input.style.animation = 'shake 0.5s';
+    setTimeout(() => input.style.animation = '', 500);
+}
+
+// Close admin modal on outside click
+window.addEventListener('click', e => {
+    const adminModal = document.getElementById('adminModal');
+    if (e.target === adminModal) {
+        closeAdminModal();
+    }
+});
+
+// Enter key to verify admin password
+document.addEventListener('keypress', e => {
+    const adminModal = document.getElementById('adminModal');
+    if (adminModal && adminModal.style.display === 'flex' && e.key === 'Enter') {
+        const activeElement = document.activeElement;
+        if (activeElement && activeElement.id === 'adminPassword') {
+            verifyAdminPassword();
+        }
+    }
+});
+
+// ─── Code verification modal ─────────────────────────────────
+function openCodeModal() {
+    const modal = document.getElementById('codeModal');
+    if (modal) {
+        modal.style.display = 'flex';
+        document.getElementById('codeInput').focus();
+    }
+}
+
+function closeCodeModal() {
+    const modal = document.getElementById('codeModal');
+    if (modal) {
+        modal.style.display = 'none';
+        document.getElementById('codeInput').value = '';
+        document.getElementById('codeError').style.display = 'none';
+    }
+}
+
+function verifyAndDownload() {
+    const input = document.getElementById('codeInput');
+    const error = document.getElementById('codeError');
+    const code = input.value.trim();
+    
+    if (!code || code.length !== 6) {
+        showError('Please enter a 6-character code');
+        return;
+    }
+    
+    // Verify the code
+    const result = window.CodeManager.verifyCode(code);
+    
+    if (!result.valid) {
+        showError(result.message === 'Invalid code' 
+            ? '❌ Invalid code. Please check and try again.'
+            : '⚠️ This code has already been used.');
+        return;
+    }
+    
+    // Mark code as used
+    window.CodeManager.markCodeAsUsed(code);
+    
+    // Track download
+    trackDownload();
+    
+    // Close modal
+    closeCodeModal();
+    
+    // Show success message
+    showSuccessNotification('✅ Code verified! Download starting...');
+    
+    // Start download
+    setTimeout(() => {
+        const link = document.createElement('a');
+        link.href = 'LETReviewer.apk';
+        link.download = 'LET-Reviewer-PH.apk';
+        document.body.appendChild(link);
+        link.click();
+        document.body.removeChild(link);
+    }, 500);
+}
+
+function showError(message) {
+    const error = document.getElementById('codeError');
+    error.textContent = message;
+    error.style.display = 'block';
+    
+    // Shake animation
+    const input = document.getElementById('codeInput');
+    input.style.animation = 'shake 0.5s';
+    setTimeout(() => input.style.animation = '', 500);
+}
+
+function showSuccessNotification(message) {
+    const notification = document.createElement('div');
+    notification.className = 'success-notification';
+    notification.textContent = message;
+    document.body.appendChild(notification);
+    
+    setTimeout(() => notification.classList.add('show'), 100);
+    setTimeout(() => {
+        notification.classList.remove('show');
+        setTimeout(() => notification.remove(), 300);
+    }, 3000);
+}
+
+// Close modal on outside click
+window.addEventListener('click', e => {
+    const modal = document.getElementById('codeModal');
+    if (e.target === modal) {
+        closeCodeModal();
+    }
+});
+
+// Enter key to verify
+document.addEventListener('keypress', e => {
+    const modal = document.getElementById('codeModal');
+    if (modal && modal.style.display === 'flex' && e.key === 'Enter') {
+        verifyAndDownload();
+    }
+});
+
+// ─── Hidden developer access (Konami-style) ──────────────────
+let clickSequence = [];
+const secretPattern = ['logo-icon', 'logo-icon', 'logo-icon']; // Triple-click logo
+let lastClickTime = 0;
+
+document.addEventListener('click', e => {
+    if (!e.target.classList.contains('logo-icon')) return;
+    
+    const now = Date.now();
+    if (now - lastClickTime > 1000) {
+        clickSequence = [];
+    }
+    lastClickTime = now;
+    
+    clickSequence.push('logo-icon');
+    if (clickSequence.length > secretPattern.length) {
+        clickSequence.shift();
+    }
+    
+    if (JSON.stringify(clickSequence) === JSON.stringify(secretPattern)) {
+        clickSequence = [];
+        // Show admin modal instead of direct redirect
+        openAdminModal();
+    }
+});
+
 // ─── Init ────────────────────────────────────────────────────
 document.addEventListener('DOMContentLoaded', () => {
     updateDownloadCount();

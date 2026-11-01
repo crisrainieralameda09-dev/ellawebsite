@@ -1,0 +1,326 @@
+╔═══════════════════════════════════════════════════════════════════════════════╗
+║                  LET REVIEWER - DOWNLOAD CODE SYSTEM                          ║
+║                           Architecture Diagram                                ║
+╚═══════════════════════════════════════════════════════════════════════════════╝
+
+┌───────────────────────────────────────────────────────────────────────────────┐
+│                            DEVELOPER WORKFLOW                                 │
+└───────────────────────────────────────────────────────────────────────────────┘
+
+    👨‍💻 Developer
+         │
+         │ 1. Opens index.html
+         ▼
+    ┌─────────────┐
+    │   Website   │
+    │  (Logo 🎓)  │
+    └──────┬──────┘
+           │
+           │ 2. Triple-click logo
+           ▼
+    ┌──────────────────────┐
+    │  script.js detects   │◄──── Secret Pattern: ['logo-icon', 'logo-icon', 'logo-icon']
+    │  click sequence      │
+    └──────┬───────────────┘
+           │
+           │ 3. Redirect
+           ▼
+    ┌──────────────────────┐
+    │  dev-keygen.html     │
+    │  Developer Portal    │
+    └──────┬───────────────┘
+           │
+           │ 4. Click "Generate"
+           ▼
+    ┌──────────────────────┐
+    │  code-manager.js     │
+    │  generateCode()      │
+    └──────┬───────────────┘
+           │
+           │ 5. Creates code
+           ▼
+    ┌──────────────────────────────┐
+    │  Code: AB3K7Y                │
+    │  Format: 6 chars (A-Z, 2-9)  │
+    │  Excluded: I, O, 0, 1        │
+    └──────┬───────────────────────┘
+           │
+           │ 6. Save to localStorage
+           ▼
+    ┌─────────────────────────────────────┐
+    │  Browser localStorage               │
+    │  Key: 'let_reviewer_codes'          │
+    │  ┌───────────────────────────────┐  │
+    │  │ {                             │  │
+    │  │   code: "AB3K7Y",             │  │
+    │  │   generated: 1698654321000,   │  │
+    │  │   used: false,                │  │
+    │  │   usedAt: null                │  │
+    │  │ }                             │  │
+    │  └───────────────────────────────┘  │
+    └──────┬──────────────────────────────┘
+           │
+           │ 7. Display & copy
+           ▼
+    ┌──────────────────────┐
+    │  Developer sees:     │
+    │  Code: AB3K7Y        │
+    │  Status: ACTIVE      │
+    │  (copied to clipboard)│
+    └──────┬───────────────┘
+           │
+           │ 8. Share code
+           ▼
+    📧 → User receives code
+
+
+┌───────────────────────────────────────────────────────────────────────────────┐
+│                              USER WORKFLOW                                    │
+└───────────────────────────────────────────────────────────────────────────────┘
+
+    👤 User (with code: AB3K7Y)
+         │
+         │ 1. Opens website
+         ▼
+    ┌─────────────┐
+    │  index.html │
+    │   Website   │
+    └──────┬──────┘
+           │
+           │ 2. Clicks "Download APK"
+           ▼
+    ┌──────────────────────┐
+    │  script.js           │
+    │  openCodeModal()     │
+    └──────┬───────────────┘
+           │
+           │ 3. Show modal
+           ▼
+    ┌─────────────────────────────────────┐
+    │  Code Verification Modal            │
+    │  ┌───────────────────────────────┐  │
+    │  │ 🔐 Enter Download Code        │  │
+    │  │                               │  │
+    │  │ [____________________]        │  │
+    │  │                               │  │
+    │  │ [✅ Verify & Download]       │  │
+    │  └───────────────────────────────┘  │
+    └──────┬──────────────────────────────┘
+           │
+           │ 4. User enters: AB3K7Y
+           ▼
+    ┌──────────────────────┐
+    │  script.js           │
+    │  verifyAndDownload() │
+    └──────┬───────────────┘
+           │
+           │ 5. Verify code
+           ▼
+    ┌────────────────────────────────────────┐
+    │  code-manager.js                       │
+    │  verifyCode("AB3K7Y")                  │
+    │  ┌──────────────────────────────────┐  │
+    │  │ 1. Find code in localStorage     │  │
+    │  │ 2. Check if exists               │  │
+    │  │ 3. Check if not used             │  │
+    │  │ 4. Return validation result      │  │
+    │  └──────────────────────────────────┘  │
+    └────┬───────────────────────────────────┘
+         │
+         ├─── Valid? ───┐                      ├─── Invalid/Used? ───┐
+         │              │                      │                      │
+         YES            NO                     │                      │
+         │              │                      │                      │
+         ▼              ▼                      ▼                      ▼
+    ┌─────────────────────┐            ┌──────────────────────┐
+    │  Mark as USED       │            │  Show error:         │
+    │  ┌───────────────┐  │            │  • Invalid code      │
+    │  │ {             │  │            │  • Already used      │
+    │  │  used: true,  │  │            │  • Shake animation   │
+    │  │  usedAt: now  │  │            └──────────────────────┘
+    │  │ }             │  │                     │
+    │  └───────────────┘  │                     │
+    └─────┬───────────────┘                     │
+          │                                     │
+          │ 6. Start download                   │ End (try again)
+          ▼                                     │
+    ┌─────────────────────┐                     │
+    │  Create <a> tag     │                     │
+    │  href: LETReviewer.apk│                   │
+    │  download: true     │                     │
+    │  Click programmatically│                  │
+    └─────┬───────────────┘                     │
+          │                                     │
+          │ 7. Download starts                  │
+          ▼                                     │
+    ┌─────────────────────┐                     │
+    │  Success message    │                     │
+    │  "✅ Code verified! │                     │
+    │  Download starting.."│                    │
+    └─────┬───────────────┘                     │
+          │                                     │
+          ▼                                     │
+    📱 APK Downloaded                            │
+          │                                     │
+          ▼                                     │
+    ✅ Complete                                  │
+
+
+┌───────────────────────────────────────────────────────────────────────────────┐
+│                         FILE STRUCTURE & ROLES                                │
+└───────────────────────────────────────────────────────────────────────────────┘
+
+    📁 Project Root
+    │
+    ├─ 📄 index.html ────────────► Main website
+    │                              • Hero section
+    │                              • Features
+    │                              • Download button (triggers modal)
+    │                              • Code verification modal (HTML)
+    │
+    ├─ 📄 dev-keygen.html ───────► Developer portal (HIDDEN)
+    │                              • Code generator UI
+    │                              • Code list display
+    │                              • Generation button
+    │
+    ├─ 📄 script.js ─────────────► Main website logic
+    │                              • openCodeModal()
+    │                              • verifyAndDownload()
+    │                              • markCodeAsUsed()
+    │                              • Hidden developer access (triple-click)
+    │                              • Download tracking
+    │
+    ├─ 📄 code-manager.js ───────► Core code system
+    │                              • generateCode()
+    │                              • verifyCode()
+    │                              • getAllCodes()
+    │                              • getStats()
+    │                              • localStorage management
+    │
+    ├─ 📄 styles.css ────────────► Styling
+    │                              • Modal styles
+    │                              • Animations (shake, fade)
+    │                              • Success notification
+    │                              • Responsive design
+    │
+    └─ 📱 LETReviewer.apk ───────► The actual APK file
+
+
+┌───────────────────────────────────────────────────────────────────────────────┐
+│                         DATA FLOW DIAGRAM                                     │
+└───────────────────────────────────────────────────────────────────────────────┘
+
+    CODE GENERATION                      CODE VERIFICATION
+    ──────────────────                   ─────────────────
+    
+    Developer Action                     User Action
+         │                                    │
+         ▼                                    ▼
+    generateCode()                       verifyCode(input)
+         │                                    │
+         ▼                                    ▼
+    Random 6-char                        Check localStorage
+         │                                    │
+         ▼                                    ├── Exists?
+    Check uniqueness                         │   ├─ No → Invalid
+         │                                    │   └─ Yes → Continue
+         ▼                                    │
+    Create object:                           ├── Used?
+    {                                        │   ├─ Yes → Already used
+      code: "ABC123",                        │   └─ No → Valid
+      generated: timestamp,                  │
+      used: false,                           ▼
+      usedAt: null                      Return result
+    }                                         │
+         │                                    ▼
+         ▼                               If valid:
+    Save to localStorage                markCodeAsUsed()
+         │                                    │
+         ▼                                    ▼
+    Display to developer                Start download
+         │                                    │
+         ▼                                    ▼
+    Copy to clipboard                   Update localStorage:
+                                        {
+                                          used: true,
+                                          usedAt: timestamp
+                                        }
+
+
+┌───────────────────────────────────────────────────────────────────────────────┐
+│                      SECURITY & VALIDATION FLOW                               │
+└───────────────────────────────────────────────────────────────────────────────┘
+
+    User clicks "Download APK"
+         │
+         ▼
+    [Code Input Modal Opens]
+         │
+         ├─── User enters code
+         │
+         ▼
+    ┌─────────────────────────────────────┐
+    │  VALIDATION CHECKS                  │
+    │                                     │
+    │  ✓ Check 1: Length = 6 chars?      │───► No → Error
+    │          │                          │
+    │          └─ Yes                     │
+    │             │                       │
+    │  ✓ Check 2: Code exists?           │───► No → "Invalid code"
+    │          │                          │
+    │          └─ Yes                     │
+    │             │                       │
+    │  ✓ Check 3: Code not used?         │───► No → "Already used"
+    │          │                          │
+    │          └─ Yes                     │
+    │             │                       │
+    │  ✅ ALL CHECKS PASSED               │
+    └─────┬───────────────────────────────┘
+          │
+          ▼
+    [Mark as USED] ───────► Update localStorage
+          │
+          ▼
+    [Start Download] ─────► Download APK
+          │
+          ▼
+    [Show Success] ───────► "✅ Code verified!"
+
+
+┌───────────────────────────────────────────────────────────────────────────────┐
+│                         localStorage STRUCTURE                                │
+└───────────────────────────────────────────────────────────────────────────────┘
+
+    Browser localStorage
+    ┌──────────────────────────────────────────┐
+    │ Key: "let_reviewer_codes"                │
+    │                                          │
+    │ Value: [                                 │
+    │   {                                      │
+    │     code: "AB3K7Y",        ◄─ Unique ID │
+    │     generated: 1698654321, ◄─ Timestamp │
+    │     used: false,           ◄─ Status    │
+    │     usedAt: null           ◄─ When used │
+    │   },                                     │
+    │   {                                      │
+    │     code: "MN8Q4P",                      │
+    │     generated: 1698654500,               │
+    │     used: true,            ◄─ USED      │
+    │     usedAt: 1698660000     ◄─ Timestamp │
+    │   }                                      │
+    │ ]                                        │
+    └──────────────────────────────────────────┘
+
+
+╔═══════════════════════════════════════════════════════════════════════════════╗
+║                              QUICK REFERENCE                                  ║
+╚═══════════════════════════════════════════════════════════════════════════════╝
+
+DEVELOPER ACCESS:  Triple-click logo (🎓)
+CODE FORMAT:       6 chars, A-Z + 2-9 (no I,O,0,1)
+CODE USAGE:        One-time only
+STORAGE:           Browser localStorage
+VALIDATION:        Real-time, client-side
+SECURITY:          Hidden portal + one-time enforcement
+
+═══════════════════════════════════════════════════════════════════════════════

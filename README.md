@@ -19,10 +19,44 @@ Official website and APK download for the LET Reviewer PH Android app.
 
 ## 🌐 Website Files
 
-- `index.html` - Main landing page
+- `index.html` - Main landing page with code verification
 - `styles.css` - Website styling
-- `script.js` - Interactive features
+- `script.js` - Interactive features + hidden developer access
+- `code-manager.js` - Code generation and verification system
+- `dev-keygen.html` - Developer code generator portal (hidden)
 - `LETReviewer.apk` - Android app download (5.04 MB)
+
+## 🔐 Download Code System
+
+The website now includes a secure one-time code system for APK downloads:
+
+### For Developers
+1. **Access Code Generator**: 
+   - Method 1: Click "Admin" link in the footer (Resources section)
+   - Method 2: Triple-click the logo (🎓) in the navbar
+2. **Enter Admin Password**: `Crisalameda09`
+3. **Generate Codes**: Click "Generate New Code" to create a 6-character access code
+4. **Share Code**: Give the code to users who want to download the app
+5. **Track Usage**: View all generated codes and their status (active/used)
+
+### For Users
+1. Click the "Download APK" button on the website
+2. Enter the 6-character code provided by the developer
+3. Click "Verify & Download" to start the download
+4. Note: Each code works only once
+
+### How It Works
+- Developer generates unique 6-character codes (letters and numbers, no confusing chars)
+- Codes are stored in browser localStorage
+- Each code can only be used once
+- Used codes are marked and cannot be reused
+- System prevents invalid or already-used codes
+
+### Technical Details
+- **Code Format**: 6 uppercase alphanumeric characters (excluding I, O, 0, 1)
+- **Storage**: Browser localStorage (`let_reviewer_codes`)
+- **Verification**: Real-time validation before download
+- **Security**: One-time use enforced, tracked with timestamps
 
 ## 🚀 How to Deploy
 

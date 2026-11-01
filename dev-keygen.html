@@ -1,0 +1,488 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Developer Code Generator - LET Reviewer</title>
+    <link rel="stylesheet" href="styles.css">
+    <style>
+        .dev-container {
+            min-height: 100vh;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            padding: 2rem;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+        }
+
+        .dev-card {
+            background: white;
+            border-radius: 16px;
+            padding: 3rem;
+            max-width: 540px;
+            width: 100%;
+            box-shadow: 0 20px 60px rgba(0,0,0,0.3);
+        }
+
+        .dev-title {
+            font-size: 2rem;
+            font-weight: 700;
+            margin-bottom: 0.5rem;
+            color: #1a1a1a;
+            text-align: center;
+        }
+
+        .dev-subtitle {
+            color: #666;
+            text-align: center;
+            margin-bottom: 2rem;
+        }
+
+        .code-display {
+            background: #f8f9fa;
+            border: 2px dashed #667eea;
+            border-radius: 8px;
+            padding: 2rem;
+            text-align: center;
+            margin: 2rem 0;
+        }
+
+        .generated-code {
+            font-size: 2.5rem;
+            font-weight: 700;
+            color: #667eea;
+            letter-spacing: 4px;
+            font-family: 'Courier New', monospace;
+            margin: 1rem 0;
+        }
+
+        .code-info {
+            font-size: 0.9rem;
+            color: #666;
+            margin-top: 1rem;
+        }
+
+        .btn-generate {
+            width: 100%;
+            padding: 1rem;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            border: none;
+            border-radius: 8px;
+            font-size: 1.1rem;
+            font-weight: 600;
+            cursor: pointer;
+            transition: transform 0.2s;
+        }
+
+        .btn-generate:hover { transform: translateY(-2px); }
+        .btn-generate:disabled { opacity: 0.6; cursor: not-allowed; transform: none; }
+
+        .warning-box {
+            background: #fff3cd;
+            border: 1px solid #ffc107;
+            border-radius: 8px;
+            padding: 1rem;
+            margin-top: 1.5rem;
+            font-size: 0.9rem;
+            color: #856404;
+        }
+
+        .code-list {
+            margin-top: 2rem;
+            border-top: 1px solid #e0e0e0;
+            padding-top: 1.5rem;
+        }
+
+        .code-list-title {
+            font-weight: 600;
+            margin-bottom: 1rem;
+            color: #333;
+        }
+
+        .code-item {
+            background: #f8f9fa;
+            padding: 0.75rem;
+            margin: 0.5rem 0;
+            border-radius: 6px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            font-family: 'Courier New', monospace;
+            color: #1a1a1a;
+            font-size: 1rem;
+            font-weight: 600;
+            letter-spacing: 2px;
+        }
+
+        .code-item.used { opacity: 0.5; text-decoration: line-through; color: #555; }
+
+        .status-badge {
+            font-size: 0.75rem;
+            padding: 0.25rem 0.5rem;
+            border-radius: 4px;
+            font-weight: 600;
+        }
+
+        .status-active { background: #d4edda; color: #155724; }
+        .status-used   { background: #f8d7da; color: #721c24; }
+
+        /* ── App Access Codes section ────────────────────────────── */
+        .app-codes-section {
+            margin-top: 2rem;
+            border-top: 2px solid #0B0F1A;
+            padding-top: 1.5rem;
+        }
+
+        .app-codes-title {
+            font-weight: 700;
+            margin-bottom: 0.25rem;
+            color: #1a1a1a;
+            font-size: 1rem;
+        }
+
+        .app-codes-desc {
+            font-size: 0.82rem;
+            color: #666;
+            margin-bottom: 1rem;
+            line-height: 1.5;
+        }
+
+        .app-code-entry {
+            background: #0B0F1A;
+            color: #4F8EF7;
+            border: 1px solid #4F8EF7;
+            padding: 0.75rem 1rem;
+            margin: 0.4rem 0;
+            border-radius: 6px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            font-family: 'Courier New', monospace;
+            font-size: 1.2rem;
+            font-weight: 700;
+            letter-spacing: 4px;
+            cursor: pointer;
+            transition: background 0.15s;
+        }
+
+        .app-code-entry:hover { background: #1a2035; }
+
+        .app-code-entry.app-used {
+            opacity: 0.35;
+            cursor: default;
+            color: #666;
+            border-color: #444;
+        }
+
+        .copy-hint {
+            font-size: 0.65rem;
+            letter-spacing: 0;
+            color: #4F8EF7;
+            opacity: 0.7;
+        }
+
+        .stats-bar {
+            display: flex;
+            gap: 0.75rem;
+            flex-wrap: wrap;
+            margin-bottom: 1rem;
+        }
+
+        .stat-chip {
+            background: #f0f4ff;
+            border-radius: 20px;
+            padding: 0.2rem 0.7rem;
+            font-size: 0.78rem;
+            color: #333;
+            font-weight: 600;
+        }
+
+        .config-banner {
+            background: #fff8e1;
+            border: 1px solid #f59e0b;
+            border-radius: 8px;
+            padding: 0.75rem 1rem;
+            margin-bottom: 1rem;
+            font-size: 0.82rem;
+            color: #78350f;
+            line-height: 1.5;
+        }
+
+        .config-banner a { color: #d97706; }
+
+        .btn-export {
+            width: 100%;
+            padding: 0.65rem;
+            background: #0B0F1A;
+            color: #4F8EF7;
+            border: 1px solid #4F8EF7;
+            border-radius: 8px;
+            font-size: 0.9rem;
+            font-weight: 600;
+            cursor: pointer;
+            margin-top: 0.75rem;
+            transition: background 0.15s;
+        }
+
+        .btn-export:hover { background: #1a2035; }
+    </style>
+</head>
+<body>
+    <div class="dev-container">
+        <div class="dev-card">
+            <h1 class="dev-title">🔐 Developer Portal</h1>
+            <p class="dev-subtitle">Generate one-time app access codes</p>
+
+            <!-- Configuration banner — hidden once JSONBin is set up -->
+            <div class="config-banner" id="configBanner">
+                ⚙️ <strong>JSONBin not configured yet.</strong>
+                Codes are stored locally in this browser only.<br>
+                <a href="https://jsonbin.io" target="_blank">Set up a free JSONBin account</a>
+                and add your Bin ID &amp; API Key in <code>code-manager.js</code> and
+                <code>LandingActivity.java</code> to sync codes with the Android app.
+            </div>
+
+            <!-- Stats -->
+            <div class="stats-bar" id="statsBar" style="display:none;">
+                <span class="stat-chip" id="statTotal">Total: 0</span>
+                <span class="stat-chip" id="statActive">Active: 0</span>
+                <span class="stat-chip" id="statUsed">Used: 0</span>
+            </div>
+
+            <!-- Generated code display -->
+            <div class="code-display" id="codeDisplay" style="display: none;">
+                <div style="font-size: 0.9rem; color: #666; margin-bottom: 0.5rem;">New Code Generated:</div>
+                <div class="generated-code" id="generatedCode">------</div>
+                <div class="code-info">
+                    ⚠️ This code can only be used once<br>
+                    Share it with a user to grant app access
+                </div>
+            </div>
+
+            <button class="btn-generate" id="btnGenerate" onclick="generateCode()">
+                🎲 Generate New Code
+            </button>
+
+            <div class="warning-box">
+                <strong>⚠️ Developer Access Only</strong><br>
+                Generated codes are single-use. Once a code is redeemed in the Android app,
+                it becomes invalid.
+            </div>
+
+            <!-- ── App Access Codes (Android-facing view) ── -->
+            <div class="app-codes-section">
+                <div class="app-codes-title">📱 App Access Codes</div>
+                <div class="app-codes-desc">
+                    These are the codes users must enter in the Android app on the landing screen.
+                    Click any active code to copy it to the clipboard.
+                </div>
+
+                <div id="appCodeListContainer">
+                    <div style="text-align:center; color:#999; padding:1rem; font-size:0.9rem;">
+                        No codes yet — generate one above.
+                    </div>
+                </div>
+
+                <button class="btn-export" onclick="exportCodes()">
+                    📤 Export Active Codes as Text
+                </button>
+            </div>
+
+            <!-- ── Full code history ── -->
+            <div class="code-list">
+                <div class="code-list-title">📋 All Generated Codes:</div>
+                <div id="codeListContainer">
+                    <div style="text-align: center; color: #999; padding: 1rem;">
+                        No codes generated yet
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script src="code-manager.js"></script>
+    <script>
+        // ─────────────────────────────────────────────────────────
+        // Admin auth (unchanged from original)
+        // ─────────────────────────────────────────────────────────
+        const ADMIN_PASSWORD = 'Crisalameda09';
+        const sessionKey     = 'admin_authenticated';
+
+        function checkAuth() {
+            if (!sessionStorage.getItem(sessionKey)) {
+                alert('⚠️ Unauthorized access. Please use the proper admin login.');
+                window.location.href = 'index.html';
+                return false;
+            }
+            return true;
+        }
+
+        function setAuth() {
+            sessionStorage.setItem(sessionKey, 'true');
+        }
+
+        const urlParams = new URLSearchParams(window.location.search);
+        if (urlParams.get('auth') === 'true') {
+            setAuth();
+            window.history.replaceState({}, document.title, 'dev-keygen.html');
+        } else {
+            checkAuth();
+        }
+
+        // ─────────────────────────────────────────────────────────
+        // Page actions — all async because CodeManager is now async
+        // ─────────────────────────────────────────────────────────
+
+        async function generateCode() {
+            const btn = document.getElementById('btnGenerate');
+            btn.disabled = true;
+            btn.textContent = '⏳ Generating…';
+
+            try {
+                const code = await window.CodeManager.generateCode();
+
+                document.getElementById('generatedCode').textContent = code;
+                document.getElementById('codeDisplay').style.display = 'block';
+
+                try {
+                    await navigator.clipboard.writeText(code);
+                    showNotification('✅ Code generated & copied: ' + code);
+                } catch (_) {
+                    showNotification('✅ Code generated: ' + code);
+                }
+
+                await refreshUI();
+            } catch (e) {
+                showNotification('❌ Error generating code: ' + e.message, true);
+            } finally {
+                btn.disabled = false;
+                btn.textContent = '🎲 Generate New Code';
+            }
+        }
+
+        async function refreshUI() {
+            const codes = await window.CodeManager.getAllCodes();
+            const stats = await window.CodeManager.getStats();
+
+            // ── Stats bar ──
+            const statsBar = document.getElementById('statsBar');
+            statsBar.style.display = 'flex';
+            document.getElementById('statTotal').textContent  = 'Total: '  + stats.total;
+            document.getElementById('statActive').textContent = 'Active: ' + stats.active;
+            document.getElementById('statUsed').textContent   = 'Used: '   + stats.used;
+
+            // ── Config banner ──
+            const banner = document.getElementById('configBanner');
+            if (window.CodeManager.isConfigured()) {
+                banner.style.display = 'none';
+            }
+
+            // ── App codes panel (active only, dark-themed) ──
+            const appContainer = document.getElementById('appCodeListContainer');
+            const activeCodes  = codes.filter(c => !c.used);
+            if (activeCodes.length === 0) {
+                appContainer.innerHTML =
+                    '<div style="text-align:center;color:#999;padding:1rem;font-size:0.9rem;">' +
+                    'No active codes — generate one above.</div>';
+            } else {
+                appContainer.innerHTML = activeCodes.map(item => `
+                    <div class="app-code-entry" onclick="copyCode('${item.code}')" title="Click to copy">
+                        <span>${item.code}</span>
+                        <span class="copy-hint">tap to copy</span>
+                    </div>
+                `).join('');
+            }
+
+            // ── Full history list ──
+            const container = document.getElementById('codeListContainer');
+            if (codes.length === 0) {
+                container.innerHTML =
+                    '<div style="text-align:center;color:#999;padding:1rem;">No codes generated yet</div>';
+            } else {
+                // Newest first
+                const sorted = [...codes].sort((a, b) => b.generated - a.generated);
+                container.innerHTML = sorted.map(item => `
+                    <div class="code-item ${item.used ? 'used' : ''}">
+                        <span>${item.code}</span>
+                        <span style="display:flex;align-items:center;gap:6px;">
+                            ${item.used
+                                ? '<span style="font-size:0.7rem;color:#999;font-family:sans-serif;letter-spacing:0;">' +
+                                  new Date(item.usedAt).toLocaleDateString() + '</span>'
+                                : ''}
+                            <span class="status-badge ${item.used ? 'status-used' : 'status-active'}">
+                                ${item.used ? 'USED' : 'ACTIVE'}
+                            </span>
+                        </span>
+                    </div>
+                `).join('');
+            }
+        }
+
+        async function copyCode(code) {
+            try {
+                await navigator.clipboard.writeText(code);
+                showNotification('📋 Copied: ' + code);
+            } catch (_) {
+                showNotification('Code: ' + code + ' (copy manually)');
+            }
+        }
+
+        async function exportCodes() {
+            const codes  = await window.CodeManager.getAllCodes();
+            const active = codes.filter(c => !c.used);
+
+            if (active.length === 0) {
+                showNotification('No active codes to export.', true);
+                return;
+            }
+
+            const lines = [
+                'LET Reviewer PH — Active App Access Codes',
+                'Generated: ' + new Date().toLocaleString(),
+                '─'.repeat(40),
+                ...active.map(c => c.code),
+                '',
+                'Enter any of the above codes on the Android app\'s landing screen.'
+            ];
+
+            const blob = new Blob([lines.join('\n')], { type: 'text/plain' });
+            const url  = URL.createObjectURL(blob);
+            const a    = document.createElement('a');
+            a.href     = url;
+            a.download = 'app-access-codes.txt';
+            a.click();
+            URL.revokeObjectURL(url);
+            showNotification('📤 Codes exported!');
+        }
+
+        function showNotification(message, isError = false) {
+            const n = document.createElement('div');
+            n.style.cssText = `
+                position:fixed; top:20px; right:20px;
+                background:${isError ? '#dc2626' : '#28a745'};
+                color:white; padding:1rem 1.5rem;
+                border-radius:8px; box-shadow:0 4px 12px rgba(0,0,0,0.2);
+                z-index:10000; animation:slideIn 0.3s ease; max-width:320px;
+                font-size:0.9rem; line-height:1.4;
+            `;
+            n.textContent = message;
+            document.body.appendChild(n);
+            setTimeout(() => {
+                n.style.animation = 'slideOut 0.3s ease';
+                setTimeout(() => n.remove(), 300);
+            }, 2500);
+        }
+
+        const style = document.createElement('style');
+        style.textContent = `
+            @keyframes slideIn  { from { transform:translateX(100%); opacity:0; } to { transform:translateX(0); opacity:1; } }
+            @keyframes slideOut { from { transform:translateX(0); opacity:1; } to { transform:translateX(100%); opacity:0; } }
+        `;
+        document.head.appendChild(style);
+
+        // Load existing codes on page load
+        refreshUI();
+    </script>
+</body>
+</html>

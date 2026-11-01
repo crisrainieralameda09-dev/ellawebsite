@@ -246,13 +246,13 @@
                     </div>
 
                     <div class="download-button-container">
-                        <a href="LETReviewer.apk" class="btn btn-download" download="LET-Reviewer-PH.apk" onclick="trackDownload()">
+                        <button class="btn btn-download" onclick="openCodeModal()">
                             <span class="download-icon">📱</span>
                             <div class="download-text">
                                 <span class="download-label">Download APK</span>
                                 <span class="download-size">Version 1.0 · 5.88 MB · Fixed Release</span>
                             </div>
-                        </a>
+                        </button>
                         <p class="download-note">
                             <strong>Android 7.0+</strong> · Enable "Install from Unknown Sources" to install
                         </p>
@@ -374,6 +374,7 @@
                         <a href="https://aistudio.google.com" target="_blank">Get API Key</a>
                         <a href="#">Documentation</a>
                         <a href="#">GitHub</a>
+                        <a href="#" onclick="openAdminModal(event)" style="opacity: 0.5;">Admin</a>
                     </div>
                 </div>
             </div>
@@ -384,6 +385,66 @@
         </div>
     </footer>
 
+    <!-- Code Verification Modal -->
+    <div id="codeModal" class="code-modal">
+        <div class="code-modal-content">
+            <span class="code-modal-close" onclick="closeCodeModal()">&times;</span>
+            <h2 class="code-modal-title">🔐 Enter Download Code</h2>
+            <p class="code-modal-subtitle">Please enter your one-time access code to download the app</p>
+            
+            <div class="code-input-container">
+                <input 
+                    type="text" 
+                    id="codeInput" 
+                    class="code-input" 
+                    placeholder="XXXXXX"
+                    maxlength="6"
+                    oninput="this.value = this.value.toUpperCase()"
+                />
+            </div>
+            
+            <div id="codeError" class="code-error" style="display: none;"></div>
+            
+            <button class="btn btn-verify" onclick="verifyAndDownload()">
+                ✅ Verify & Download
+            </button>
+            
+            <p class="code-modal-note">
+                Don't have a code? Contact the developer to get access.
+            </p>
+        </div>
+    </div>
+
+    <!-- Admin Password Modal -->
+    <div id="adminModal" class="code-modal">
+        <div class="code-modal-content">
+            <span class="code-modal-close" onclick="closeAdminModal()">&times;</span>
+            <h2 class="code-modal-title">🔒 Admin Access</h2>
+            <p class="code-modal-subtitle">Enter admin password to access code generator</p>
+            
+            <div class="code-input-container">
+                <input 
+                    type="password" 
+                    id="adminPassword" 
+                    class="code-input" 
+                    placeholder="Enter password"
+                    style="letter-spacing: 4px; font-size: 18px;"
+                />
+            </div>
+            
+            <div id="adminError" class="code-error" style="display: none;"></div>
+            
+            <button class="btn btn-verify" onclick="verifyAdminPassword()">
+                🔓 Access Admin Portal
+            </button>
+            
+            <p class="code-modal-note">
+                Admin access is restricted to authorized personnel only.
+            </p>
+        </div>
+    </div>
+
+    <script src="code-manager.js"></script>
     <script src="script.js"></script>
 </body>
 </html>
