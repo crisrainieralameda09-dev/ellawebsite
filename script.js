@@ -264,45 +264,49 @@ function closeCodeModal() {
 
 function verifyAndDownload() {
     const input = document.getElementById('codeInput');
-    const code = input.value.trim();
-    
+    const code  = input.value.trim().toUpperCase();
+    const btn   = document.querySelector('.btn-verify');
+
     if (!code || code.length !== 6) {
         showError('Please enter a 6-character code');
         return;
     }
 
-    // Disable button to prevent double-clicks while verifying
-    const btn = document.querySelector('.btn-verify');
-    if (btn) { btn.disabled = true; btn.textContent = 'Verifying...'; }
+    // Show loading state
+    if (btn) { btn.disabled = true; btn.textContent = '⏳ Verifying...'; }
+    document.getElementById('codeError').style.display = 'none';
 
-    window.CodeManager.verifyCode(code).then(result => {
-        if (!result.valid) {
-            showError(result.message === 'Invalid code'
-                ? '❌ Invalid code. Please check and try again.'
-                : '⚠️ This code has already been used.');
-            if (btn) { btn.disabled = false; btn.textContent = '✅ Verify & Download'; }
-            return;
-        }
+    window.CodeManager.verifyCode(code)
+        .then(function(result) {
+            if (!result.valid) {
+                showError(result.message === 'Invalid code'
+                    ? '❌ Invalid code. Please check and try again.'
+                    : '⚠️ This code has already been used.');
+                if (btn) { btn.disabled = false; btn.textContent = '✅ Verify & Download'; }
+                return;
+            }
 
-        // Mark as used, then download
-        window.CodeManager.markCodeAsUsed(code).then(() => {
-            trackDownload();
-            closeCodeModal();
-            showSuccessNotification('✅ Code verified! Download starting...');
+            // Valid — mark as used then download
+            return window.CodeManager.markCodeAsUsed(code).then(function() {
+                trackDownload();
+                closeCodeModal();
+                showSuccessNotification('✅ Code verified! Download starting...');
+                if (btn) { btn.disabled = false; btn.textContent = '✅ Verify & Download'; }
+                setTimeout(function() {
+                    const link = document.createElement('a');
+                    link.href     = 'LETReviewer.apk';
+                    link.download = 'LET-Reviewer-PH.apk';
+                    document.body.appendChild(link);
+                    link.click();
+                    document.body.removeChild(link);
+                }, 500);
+            });
+        })
+        .catch(function(err) {
+            console.error('Verify error:', err);
+            showError('⚠️ Connection error. Please try again.');
             if (btn) { btn.disabled = false; btn.textContent = '✅ Verify & Download'; }
-            setTimeout(() => {
-                const link = document.createElement('a');
-                link.href = 'LETReviewer.apk';
-                link.download = 'LET-Reviewer-PH.apk';
-                document.body.appendChild(link);
-                link.click();
-                document.body.removeChild(link);
-            }, 500);
         });
-    }).catch(() => {
-        showError('⚠️ Verification failed. Please try again.');
-        if (btn) { btn.disabled = false; btn.textContent = '✅ Verify & Download'; }
-    });
 }
 
 function showError(message) {

@@ -341,81 +341,58 @@
 
             try {
                 const code = await window.CodeManager.generateCode();
-
                 document.getElementById('generatedCode').textContent = code;
                 document.getElementById('codeDisplay').style.display = 'block';
-
                 try {
                     await navigator.clipboard.writeText(code);
                     showNotification('✅ Code generated & copied: ' + code);
                 } catch (_) {
                     showNotification('✅ Code generated: ' + code);
                 }
-
                 await refreshUI();
             } catch (e) {
-                showNotification('❌ Error generating code: ' + e.message, true);
-            } finally {
-                btn.disabled = false;
-                btn.textContent = '🎲 Generate New Code';
+                showNotification('❌ Error: ' + e.message, true);
             }
+
+            btn.disabled = false;
+            btn.textContent = '🎲 Generate New Code';
         }
 
         async function refreshUI() {
             const codes = await window.CodeManager.getAllCodes();
             const stats = await window.CodeManager.getStats();
 
-            // ── Stats bar ──
-            const statsBar = document.getElementById('statsBar');
-            statsBar.style.display = 'flex';
+            document.getElementById('statsBar').style.display = 'flex';
             document.getElementById('statTotal').textContent  = 'Total: '  + stats.total;
             document.getElementById('statActive').textContent = 'Active: ' + stats.active;
             document.getElementById('statUsed').textContent   = 'Used: '   + stats.used;
+            document.getElementById('configBanner').style.display = 'none';
 
-            // ── Config banner ──
-            const banner = document.getElementById('configBanner');
-            if (window.CodeManager.isConfigured()) {
-                banner.style.display = 'none';
-            }
-
-            // ── App codes panel (active only, dark-themed) ──
+            // Active codes panel
             const appContainer = document.getElementById('appCodeListContainer');
             const activeCodes  = codes.filter(c => !c.used);
-            if (activeCodes.length === 0) {
-                appContainer.innerHTML =
-                    '<div style="text-align:center;color:#999;padding:1rem;font-size:0.9rem;">' +
-                    'No active codes — generate one above.</div>';
-            } else {
-                appContainer.innerHTML = activeCodes.map(item => `
+            appContainer.innerHTML = activeCodes.length === 0
+                ? '<div style="text-align:center;color:#999;padding:1rem;font-size:0.9rem;">No active codes — generate one above.</div>'
+                : activeCodes.map(item => `
                     <div class="app-code-entry" onclick="copyCode('${item.code}')" title="Click to copy">
                         <span>${item.code}</span>
                         <span class="copy-hint">tap to copy</span>
-                    </div>
-                `).join('');
-            }
+                    </div>`).join('');
 
-            // ── Full history list ──
+            // Full history
             const container = document.getElementById('codeListContainer');
             if (codes.length === 0) {
-                container.innerHTML =
-                    '<div style="text-align:center;color:#999;padding:1rem;">No codes generated yet</div>';
+                container.innerHTML = '<div style="text-align:center;color:#999;padding:1rem;">No codes generated yet</div>';
             } else {
-                // Newest first
                 const sorted = [...codes].sort((a, b) => b.generated - a.generated);
                 container.innerHTML = sorted.map(item => `
                     <div class="code-item ${item.used ? 'used' : ''}">
                         <span>${item.code}</span>
                         <span style="display:flex;align-items:center;gap:6px;">
-                            ${item.used
-                                ? '<span style="font-size:0.7rem;color:#999;font-family:sans-serif;letter-spacing:0;">' +
-                                  new Date(item.usedAt).toLocaleDateString() + '</span>'
-                                : ''}
-                            <span class="status-badge ${item.used ? 'status-used' : 'status-active'}">
-                                ${item.used ? 'USED' : 'ACTIVE'}
-                            </span>
+                            ${item.used ? `<span style="font-size:0.7rem;color:#999;font-family:sans-serif;letter-spacing:0;">${new Date(item.usedAt).toLocaleDateString()}</span>` : ''}
+                            <span class="status-badge ${item.used ? 'status-used' : 'status-active'}">${item.used ? 'USED' : 'ACTIVE'}</span>
                         </span>
-                    </div>
-                `).join('');
+                    </div>`).join('');
             }
         }
 
@@ -431,26 +408,17 @@
         async function exportCodes() {
             const codes  = await window.CodeManager.getAllCodes();
             const active = codes.filter(c => !c.used);
-
-            if (active.length === 0) {
-                showNotification('No active codes to export.', true);
-                return;
-            }
-
+            if (active.length === 0) { showNotification('No active codes to export.', true); return; }
             const lines = [
-                'LET Reviewer PH — Active App Access Codes',
+                'LET Reviewer PH — Active Access Codes',
                 'Generated: ' + new Date().toLocaleString(),
                 '─'.repeat(40),
                 ...active.map(c => c.code),
-                '',
-                'Enter any of the above codes on the Android app\'s landing screen.'
+                '', "Enter any code on the website's download screen."
             ];
-
             const blob = new Blob([lines.join('\n')], { type: 'text/plain' });
             const url  = URL.createObjectURL(blob);
-            const a    = document.createElement('a');
-            a.href     = url;
-            a.download = 'app-access-codes.txt';
+            const a    = Object.assign(document.createElement('a'), { href: url, download: 'access-codes.txt' });
             a.click();
             URL.revokeObjectURL(url);
             showNotification('📤 Codes exported!');
@@ -482,7 +450,6 @@
         document.head.appendChild(style);
 
         // Load existing codes on page load
-        refreshUI();
-    </script>
+        refreshUI().catch(e => console.error('Load error:', e));</script>
 </body>
 </html>
